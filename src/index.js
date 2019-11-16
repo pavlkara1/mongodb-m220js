@@ -1,10 +1,10 @@
-import app from "./server"
-import { MongoClient } from "mongodb"
-import MoviesDAO from "../src/dao/moviesDAO"
-import UsersDAO from "./dao/usersDAO"
-import CommentsDAO from "./dao/commentsDAO"
+import app from "./server";
+import { MongoClient } from "mongodb";
+import MoviesDAO from "../src/dao/moviesDAO";
+import UsersDAO from "./dao/usersDAO";
+import CommentsDAO from "./dao/commentsDAO";
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8000;
 
 /**
 Ticket: Connection Pooling
@@ -29,14 +29,14 @@ MongoClient.connect(
   { useNewUrlParser: true },
 )
   .catch(err => {
-    console.error(err.stack)
-    process.exit(1)
+    console.error(err.stack);
+    process.exit(1);
   })
   .then(async client => {
-    await MoviesDAO.injectDB(client)
-    await UsersDAO.injectDB(client)
-    await CommentsDAO.injectDB(client)
+    await MoviesDAO.injectDB(client);
+    await UsersDAO.injectDB(client);
+    await CommentsDAO.injectDB(client);
     app.listen(port, () => {
-      console.log(`listening on port ${port}`)
-    })
-  })
+      console.log(`listening on port ${port}`);
+    });
+  });

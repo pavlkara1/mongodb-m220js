@@ -1,16 +1,16 @@
-let users
-let sessions
+let users;
+let sessions;
 
 export default class UsersDAO {
   static async injectDB(conn) {
     if (users && sessions) {
-      return
+      return;
     }
     try {
-      users = await conn.db(process.env.MFLIX_NS).collection("users")
-      sessions = await conn.db(process.env.MFLIX_NS).collection("sessions")
+      users = await conn.db(process.env.MFLIX_NS).collection("users");
+      sessions = await conn.db(process.env.MFLIX_NS).collection("sessions");
     } catch (e) {
-      console.error(`Unable to establish collection handles in userDAO: ${e}`)
+      console.error(`Unable to establish collection handles in userDAO: ${e}`);
     }
   }
 
@@ -39,7 +39,7 @@ export default class UsersDAO {
   static async getUser(email) {
     // TODO Ticket: User Management
     // Retrieve the user document corresponding with the user's email.
-    return await users.findOne({ someField: "someValue" })
+    return await users.findOne({ someField: "someValue" });
   }
 
   /**
@@ -60,14 +60,14 @@ export default class UsersDAO {
       // Insert a user with the "name", "email", and "password" fields.
       // TODO Ticket: Durable Writes
       // Use a more durable Write Concern for this operation.
-      await users.insertOne({ someField: "someValue" })
-      return { success: true }
+      await users.insertOne({ someField: "someValue" });
+      return { success: true };
     } catch (e) {
       if (String(e).startsWith("MongoError: E11000 duplicate key error")) {
-        return { error: "A user with the given email already exists." }
+        return { error: "A user with the given email already exists." };
       }
-      console.error(`Error occurred while adding new user, ${e}.`)
-      return { error: e }
+      console.error(`Error occurred while adding new user, ${e}.`);
+      return { error: e };
     }
   }
 
@@ -85,11 +85,11 @@ export default class UsersDAO {
       await sessions.updateOne(
         { someField: "someValue" },
         { $set: { someOtherField: "someOtherValue" } },
-      )
-      return { success: true }
+      );
+      return { success: true };
     } catch (e) {
-      console.error(`Error occurred while logging in user, ${e}`)
-      return { error: e }
+      console.error(`Error occurred while logging in user, ${e}`);
+      return { error: e };
     }
   }
 
@@ -102,11 +102,11 @@ export default class UsersDAO {
     try {
       // TODO Ticket: User Management
       // Delete the document in the `sessions` collection matching the email.
-      await sessions.deleteOne({ someField: "someValue" })
-      return { success: true }
+      await sessions.deleteOne({ someField: "someValue" });
+      return { success: true };
     } catch (e) {
-      console.error(`Error occurred while logging out user, ${e}`)
-      return { error: e }
+      console.error(`Error occurred while logging out user, ${e}`);
+      return { error: e };
     }
   }
 
@@ -120,10 +120,10 @@ export default class UsersDAO {
     try {
       // TODO Ticket: User Management
       // Retrieve the session document corresponding with the user's email.
-      return sessions.findOne({ someField: "someValue" })
+      return sessions.findOne({ someField: "someValue" });
     } catch (e) {
-      console.error(`Error occurred while retrieving user session, ${e}`)
-      return null
+      console.error(`Error occurred while retrieving user session, ${e}`);
+      return null;
     }
   }
 
@@ -134,17 +134,17 @@ export default class UsersDAO {
    */
   static async deleteUser(email) {
     try {
-      await users.deleteOne({ email })
-      await sessions.deleteOne({ user_id: email })
+      await users.deleteOne({ email });
+      await sessions.deleteOne({ user_id: email });
       if (!(await this.getUser(email)) && !(await this.getUserSession(email))) {
-        return { success: true }
+        return { success: true };
       } else {
-        console.error(`Deletion unsuccessful`)
-        return { error: `Deletion unsuccessful` }
+        console.error(`Deletion unsuccessful`);
+        return { error: `Deletion unsuccessful` };
       }
     } catch (e) {
-      console.error(`Error occurred while deleting user, ${e}`)
-      return { error: e }
+      console.error(`Error occurred while deleting user, ${e}`);
+      return { error: e };
     }
   }
 
@@ -164,33 +164,33 @@ export default class UsersDAO {
       reflect the new information in preferences.
       */
 
-      preferences = preferences || {}
+      preferences = preferences || {};
 
       // TODO Ticket: User Preferences
       // Use the data in "preferences" to update the user's preferences.
       const updateResponse = await users.updateOne(
         { someField: someValue },
         { $set: { someOtherField: someOtherValue } },
-      )
+      );
 
       if (updateResponse.matchedCount === 0) {
-        return { error: "No user found with that email" }
+        return { error: "No user found with that email" };
       }
-      return updateResponse
+      return updateResponse;
     } catch (e) {
       console.error(
         `An error occurred while updating this user's preferences, ${e}`,
-      )
-      return { error: e }
+      );
+      return { error: e };
     }
   }
 
   static async checkAdmin(email) {
     try {
-      const { isAdmin } = await this.getUser(email)
-      return isAdmin || false
+      const { isAdmin } = await this.getUser(email);
+      return isAdmin || false;
     } catch (e) {
-      return { error: e }
+      return { error: e };
     }
   }
 
@@ -199,10 +199,10 @@ export default class UsersDAO {
       const updateResponse = users.updateOne(
         { email },
         { $set: { isAdmin: true } },
-      )
-      return updateResponse
+      );
+      return updateResponse;
     } catch (e) {
-      return { error: e }
+      return { error: e };
     }
   }
 }

@@ -3,3 +3,4 @@
 /dotenv_unix
 /dotenv_win
 README.rst
+/.env
