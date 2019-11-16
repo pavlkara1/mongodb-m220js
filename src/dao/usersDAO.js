@@ -58,9 +58,9 @@ export default class UsersDAO {
     try {
       // Done Ticket: User Management
       // Insert a user with the "name", "email", and "password" fields.
-      // TODO Ticket: Durable Writes
+      // Done Ticket: Durable Writes
       // Use a more durable Write Concern for this operation.
-      await users.insertOne({ name: userInfo.name, email: userInfo.email, password: userInfo.password });
+      await users.insertOne({ name: userInfo.name, email: userInfo.email, password: userInfo.password }, {w: "majority"});
       return { success: true };
     } catch (e) {
       if (String(e).startsWith("MongoError: E11000 duplicate key error")) {
@@ -119,7 +119,7 @@ export default class UsersDAO {
    */
   static async getUserSession(email) {
     try {
-      // TODO Ticket: User Management
+      // Done Ticket: User Management
       // Retrieve the session document corresponding with the user's email.
       return sessions.findOne({ user_id: email });
     } catch (e) {
@@ -167,11 +167,12 @@ export default class UsersDAO {
 
       preferences = preferences || {};
 
-      // TODO Ticket: User Preferences
+      // Done Ticket: User Preferences
       // Use the data in "preferences" to update the user's preferences.
       const updateResponse = await users.updateOne(
         { email: email },
         { $set: { preferences: preferences } },
+        { upsert: true}
       );
 
       if (updateResponse.matchedCount === 0) {
