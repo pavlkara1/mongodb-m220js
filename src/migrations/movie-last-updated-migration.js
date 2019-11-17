@@ -47,7 +47,7 @@ const MongoError = require("mongodb").MongoError
       "\x1b[32m",
       `Found ${moviesToMigrate.length} documents to update`,
     );
-    // TODO: Complete the BulkWrite statement below
+    // Done: Complete the BulkWrite statement below
     const { modifiedCount } = await mflix
       .collection("movies")
       .bulkWrite(moviesToMigrate);
