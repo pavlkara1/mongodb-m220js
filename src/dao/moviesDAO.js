@@ -336,14 +336,16 @@ export default class MoviesDAO {
        When this specific error is thrown, the method should return `null`.
        */
 
-      // TODO Ticket: Error Handling
+      // Done Ticket: Error Handling
       // Catch the InvalidId error by string matching, and then handle it.
+      if (String(e).startsWith("MongoError: E11000 duplicate key error")) {
+        return null;
+      }
       console.error(`Something went wrong in getMovieByID: ${e}`);
-      throw e;
+      return null;
     }
   }
 }
-
 /**
  * This is a parsed query, sort, and project bundle.
  * @typedef QueryParams
