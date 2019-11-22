@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  web_api:
+    build:
+      context: .
+
+    networks:
+      - pavlos-net
+
+    ports:
+      - 3005:3000
+    
+    depends_on:
+      - mongo_db
+
+  mongo_db:
+    image: mongo:latest
+
+    networks: 
+      - pavlos-net
+
+networks:
+  pavlos-net:

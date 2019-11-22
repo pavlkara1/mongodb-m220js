@@ -3,3 +3,5 @@
 /dotenv_unix
 /dotenv_win
 README.rst
+Dockerfile
+docker-compose.yml
